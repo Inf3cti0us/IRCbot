@@ -12,11 +12,9 @@ public class Bot {
     private String channel = "#Inf3cti0us";
    // private String Auth = "Inf3cti0us!Swatariane@Rizon-7D7F151.r.u.going.to.do.because.i.stole-your.info";
     private String Master = "Inf3cti0us";
-    public String Person = null;
-    private String Argument = null;
+    private String Person;
 
     private Pattern p = Pattern.compile(":(.*)!(.*)@(.*)\\s(.*)\\s(.*)\\s:(.*)!(.*)\\s(.*)");
-
 
     private String host;
     private int port;
@@ -103,7 +101,7 @@ public class Bot {
                         Matcher m = p.matcher(line);
                         if(m.find()) Person = m.group(1);
 
-                        if(Person.equals(Master)){
+                        if(Person.equals("Inf3cti0us")){     //TODO Find why this is broken?
                             sendPrivmsg(target,"Greetings Master " + Person );
                         }else{
                         sendPrivmsg(target, "Hey " +  Person + "..");
@@ -111,13 +109,21 @@ public class Bot {
                     }
 
 
-                    if(message.equalsIgnoreCase("!say")){
+                    if(message.equalsIgnoreCase("!Say")){
                            if(target.equalsIgnoreCase(nick))
                                target = sender;
 
                         Matcher m = p.matcher(line);
-                        if(m.find()) Argument = m.group(8);  Person = m.group(1);
-                            sendActionmsg(target,Argument);
+                        String argument;
+                        if(m.find() && m.matches()){
+                            argument = m.group(8);
+                            Person = m.group(1);
+                            sendPrivmsg(target,Person + " " + argument);
+                        }else{
+                            argument = m.group(6);
+                            Person = m.group(1);
+                            sendPrivmsg(target,Person + " " + argument);
+                        }
 
                     }
 
@@ -146,7 +152,7 @@ public class Bot {
                     writeLine("NICK :" + nick + RandomNumber());
                     writeLine("USER " + user + " * * :" + realName);
 
-                } if(command.equals("439")){
+                } if(command.equals("439")){   //TODO something interesting here?
                     System.out.println("Waiting for processing connection..");
                 } if(command.equals("KICK")){
                     sendPrivmsg(target,"Sorry, I'll behave better this time!");
