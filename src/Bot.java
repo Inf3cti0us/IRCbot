@@ -14,7 +14,7 @@ public class Bot {
     private String Master = "Inf3cti0us";
     private String Person;
 
-    private Pattern p = Pattern.compile(":(.*)!(.*)@(.*)\\s(.*)\\s(.*)\\s:(.*)");
+    protected Pattern p = Pattern.compile(":(.*)!(.*)@(.*)\\s(.*)\\s(.*)\\s:(.*)");
 
     private String host;
     private int port;
@@ -108,24 +108,6 @@ public class Bot {
                         }
                     }
 
-
-                    if(message.equalsIgnoreCase("!Say")){
-                           if(target.equalsIgnoreCase(nick))
-                               target = sender;
-
-                        Matcher m = p.matcher(line);
-                        String argument;
-                        if(m.find() && m.matches()){
-                            argument = m.group(8);
-                            Person = m.group(1);
-                            sendPrivmsg(target,Person + " " + argument);
-                        }else{
-                            argument = m.group(6);
-                            Person = m.group(1);
-                            sendPrivmsg(target,Person + " " + argument);
-                        }
-
-                    }
 
 
                     if(message.equalsIgnoreCase("Wau?")){
