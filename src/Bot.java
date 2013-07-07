@@ -7,9 +7,10 @@ public class Bot {
     private String nick = "SlaveMr";
     private String user = "SlaveMr";
     private String realName = "Slave to Master INF";
-    private String channel = "#Inf3cti0us";
+    private String channel = "#aurora-rs";
     private String Auth = "Inf3cti0us!Swatariane@Rizon-7D7F151.r.u.going.to.do.because.i.stole-your.info";
     private String Master = "Inf3cti0us";
+    private String user = "";
 
     private Pattern p = Pattern.compile(":(.*)!(.*)@([^\\ ]*)");
 
@@ -80,8 +81,10 @@ public class Bot {
                     if (message.equalsIgnoreCase("!hello")) {
                         if (target.equalsIgnoreCase(nick))
                             target = sender;
+                        if(p.matcher(line).find())
+                            user = p.matcher(line).group(1);
 
-                        sendPrivmsg(target, "Hewo " +  line + "!");   //TODO get this to work normally
+                        sendPrivmsg(target, "Hewo " +  user + "!");   //TODO get this to work normally
                        // sendPrivmsg(target, "Hello to you too!");
                     }
 
