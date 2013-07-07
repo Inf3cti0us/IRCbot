@@ -9,12 +9,12 @@ public class Bot {
     private String nick = "SlaveMr";
     private String user = "SlaveMr";
     private String realName = "Slave to Master INF";
-    private String channel = "#Inf3cti0us";
+    private String channel = "#aurora-rs";
    // private String Auth = "Inf3cti0us!Swatariane@Rizon-7D7F151.r.u.going.to.do.because.i.stole-your.info";
     private String Master = "Inf3cti0us";
     private String Person;
 
-    private Pattern p = Pattern.compile(":(.*)!(.*)@(.*)\\s(.*)\\s(.*)\\s:(.*)!(.*)\\s(.*)");
+    private Pattern p = Pattern.compile(":(.*)!(.*)@(.*)\\s(.*)\\s(.*)\\s:(.*)");
 
     private String host;
     private int port;
