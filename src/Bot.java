@@ -29,6 +29,7 @@ public class Bot {
     private String line = null;
 
 
+
     public int RandomNumber(){
         Random r = new Random();
         return r.nextInt(5);
@@ -64,7 +65,7 @@ public class Bot {
         String prefix;
         String command;
         String target;
-        String message = null;
+        String message;
 
         String sender;
 
@@ -88,10 +89,13 @@ public class Bot {
 
                 if (command.equals("001")) {
                     writeLine("JOIN :" + channel);
+
+
                 } else if (command.equals("PRIVMSG")) {  // We got messaged!
                     // to parse the message, we will need the
                     // index of the second colon in the line
                     message = line.substring(line.indexOf(":", 1) + 1);
+
                     if (message.equalsIgnoreCase("!hello")) {
                         if (target.equalsIgnoreCase(nick))
                             target = sender;
@@ -105,6 +109,8 @@ public class Bot {
                         sendPrivmsg(target, "Hey " +  Person + "..");
                         }
                     }
+
+
                     if(message.equalsIgnoreCase("!say")){
                            if(target.equalsIgnoreCase(nick))
                                target = sender;
@@ -114,6 +120,8 @@ public class Bot {
                             sendActionmsg(target,Argument);
 
                     }
+
+
                     if(message.equalsIgnoreCase("Wau?")){
                         if(target.equalsIgnoreCase(nick))
                                 target = sender;
@@ -122,6 +130,7 @@ public class Bot {
                                 sendPrivmsg(target, "Not a robot ;/ " + m.group(1));
 
                     }
+
 
                     if(message.equalsIgnoreCase("!help")){
 
