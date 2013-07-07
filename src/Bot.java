@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Random;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Bot {
@@ -7,12 +9,14 @@ public class Bot {
     private String nick = "SlaveMr";
     private String user = "SlaveMr";
     private String realName = "Slave to Master INF";
-    private String channel = "#aurora-rs";
+    private String channel = "#Inf3cti0us";
    // private String Auth = "Inf3cti0us!Swatariane@Rizon-7D7F151.r.u.going.to.do.because.i.stole-your.info";
     private String Master = "Inf3cti0us";
     public String Person = null;
+    private String Argument = null;
 
-    private Pattern p = Pattern.compile(":(.*)!(.*)@([^\\ ]*)");
+    private Pattern p = Pattern.compile(":(.*)!(.*)@(.*)\\s(.*)\\s(.*)\\s:(.*)!(.*)\\s(.*)");
+
 
     private String host;
     private int port;
@@ -22,6 +26,14 @@ public class Bot {
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
+    private String line = null;
+
+
+    public int RandomNumber(){
+        Random r = new Random();
+        return r.nextInt(5);
+    }
+
 
     private void writeLine(String message) throws IOException {
         if (!message.endsWith("\r\n"))
@@ -36,6 +48,10 @@ public class Bot {
         writeLine("PRIVMSG " + target + " :" + message);
     }
 
+    private void sendActionmsg(String target, String message) throws IOException{
+        writeLine("PRIVMSG " + target + " : ACTION" + message);
+    }
+
     private void connect() throws IOException {
         socket = new Socket(host, port);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -44,15 +60,13 @@ public class Bot {
         writeLine("NICK :" + nick);
         writeLine("USER " + user + " * * :" + realName);
 
-        String line;
-
         String[] args;
         String prefix;
         String command;
         String target;
-        String message;
+        String message = null;
 
-        String sender = null;
+        String sender;
 
         while((line = in.readLine()) != null) {
             System.out.println("<" + line);
@@ -74,40 +88,62 @@ public class Bot {
 
                 if (command.equals("001")) {
                     writeLine("JOIN :" + channel);
-                } else if (command.equals("PRIVMSG")) {
+                } else if (command.equals("PRIVMSG")) {  // We got messaged!
                     // to parse the message, we will need the
                     // index of the second colon in the line
                     message = line.substring(line.indexOf(":", 1) + 1);
                     if (message.equalsIgnoreCase("!hello")) {
                         if (target.equalsIgnoreCase(nick))
                             target = sender;
-                       sendPrivmsg(target,line + " << Trying to use pattern on this" );
-                        sendPrivmsg(target,p.toString() + " << THis is the pattern");
 
-                        if(p.matcher(line).find()){
-                            Person = p.matcher(line).group(1);
+                        Matcher m = p.matcher(line);
+                        if(m.find()) Person = m.group(1);
 
-                        sendPrivmsg(target, "Hewo " +  Person + "!");   //TODO get this to work normally
-                        } else {
-                            sendPrivmsg(target,"couldn't find your name..");
+                        if(Person.equals(Master)){
+                            sendPrivmsg(target,"Greetings Master " + Person );
+                        }else{
+                        sendPrivmsg(target, "Hey " +  Person + "..");
                         }
+                    }
+                    if(message.equalsIgnoreCase("!say")){
+                           if(target.equalsIgnoreCase(nick))
+                               target = sender;
+
+                        Matcher m = p.matcher(line);
+                        if(m.find()) Argument = m.group(8);  Person = m.group(1);
+                            sendActionmsg(target,Argument);
 
                     }
-
                     if(message.equalsIgnoreCase("Wau?")){
                         if(target.equalsIgnoreCase(nick))
                                 target = sender;
-                                sendPrivmsg(target, "Not a robot ;/");
+                        Matcher m = p.matcher(line);
+                        if(m.find())
+                                sendPrivmsg(target, "Not a robot ;/ " + m.group(1));
+
                     }
 
                     if(message.equalsIgnoreCase("!help")){
 
                             if(target.equalsIgnoreCase(nick)){
                                 target = sender;
-                            sendPrivmsg(target,"No help for you " + target);
+                                Matcher m = p.matcher(line);
+                                if(m.find())
+                            sendPrivmsg(target,"No help for you " + m.group(1));
                         }
                     }
+                }if(command.equals("433")){
+                    //Nickname is already in use. Add random Numbers :)
+                    writeLine("NICK :" + nick + RandomNumber());
+                    writeLine("USER " + user + " * * :" + realName);
+
+                } if(command.equals("439")){
+                    System.out.println("Waiting for processing connection..");
+                } if(command.equals("KICK")){
+                    sendPrivmsg(target,"Sorry, I'll behave better this time!");
+                    sendPrivmsg(target," ACTION sits in the naughty corner");
                 }
+
             }
         }
     }
