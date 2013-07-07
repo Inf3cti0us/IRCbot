@@ -8,9 +8,9 @@ public class Bot {
     private String user = "SlaveMr";
     private String realName = "Slave to Master INF";
     private String channel = "#aurora-rs";
-    private String Auth = "Inf3cti0us!Swatariane@Rizon-7D7F151.r.u.going.to.do.because.i.stole-your.info";
+   // private String Auth = "Inf3cti0us!Swatariane@Rizon-7D7F151.r.u.going.to.do.because.i.stole-your.info";
     private String Master = "Inf3cti0us";
-    private String user = "";
+    public String Person = null;
 
     private Pattern p = Pattern.compile(":(.*)!(.*)@([^\\ ]*)");
 
@@ -44,13 +44,13 @@ public class Bot {
         writeLine("NICK :" + nick);
         writeLine("USER " + user + " * * :" + realName);
 
-        String line = null;
+        String line;
 
-        String[] args = null;
-        String prefix = null;
-        String command = null;
-        String target = null;
-        String message = null;
+        String[] args;
+        String prefix;
+        String command;
+        String target;
+        String message;
 
         String sender = null;
 
@@ -81,11 +81,17 @@ public class Bot {
                     if (message.equalsIgnoreCase("!hello")) {
                         if (target.equalsIgnoreCase(nick))
                             target = sender;
-                        if(p.matcher(line).find())
-                            user = p.matcher(line).group(1);
+                       sendPrivmsg(target,line + " << Trying to use pattern on this" );
+                        sendPrivmsg(target,p.toString() + " << THis is the pattern");
 
-                        sendPrivmsg(target, "Hewo " +  user + "!");   //TODO get this to work normally
-                       // sendPrivmsg(target, "Hello to you too!");
+                        if(p.matcher(line).find()){
+                            Person = p.matcher(line).group(1);
+
+                        sendPrivmsg(target, "Hewo " +  Person + "!");   //TODO get this to work normally
+                        } else {
+                            sendPrivmsg(target,"couldn't find your name..");
+                        }
+
                     }
 
                     if(message.equalsIgnoreCase("Wau?")){
