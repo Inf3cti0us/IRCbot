@@ -81,8 +81,7 @@ public class Bot {
                         if (target.equalsIgnoreCase(nick))
                             target = sender;
 
-                        sendPrivmsg(target,"Hello" + p.matcher(line).group(1));
-                       // sendPrivmsg(target, "Hewo " +  line + "!");   //TODO get this to work normally
+                        sendPrivmsg(target, "Hewo " +  line + "!");   //TODO get this to work normally
                        // sendPrivmsg(target, "Hello to you too!");
                     }
 
